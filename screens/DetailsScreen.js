@@ -7,17 +7,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 class DetailsScreen extends React.Component {
   constructor(props) {
     super(props);
-
-    // this.state = {
-    //   name: 'Rashmiranjan Pradhan',
-    //   addr: 'L-188, Nandan Vihar',
-    //   loc: 'Bbsr',
-    //   Prof: 'Developer',
-    //   workex: 'LN employee',
-    // };
   }
-
+  
   render() {
+    // console.log('details')
+    // console.log(this.props.user)
     return (
       <View
         style={{
@@ -28,6 +22,11 @@ class DetailsScreen extends React.Component {
         }}>
         <Card>
           <Card.Title title="User Details" />
+          <Text>{this.props.name}</Text>
+          <Text>{this.props.addr}</Text>
+          <Text>{this.props.loc}</Text>
+          <Text>{this.props.prof}</Text>
+          <Text>{this.props.workex}</Text>
         </Card>
         <Card>
           <Text>options Container</Text>

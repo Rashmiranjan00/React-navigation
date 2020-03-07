@@ -4,9 +4,9 @@ import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom
 import {createStackNavigator} from 'react-navigation-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import Icon from "react-native-vector-icons/MaterialIcons";
-import HomeScreen from '.././screens/HomeScreen';
-import SettingScreen from '.././screens/SettingScreen'
-import DetailsScreen from '.././screens/DetailsScreen';
+import HomeScreen from '../screens/HomeScreen';
+import SettingScreen from '../screens/SettingScreen'
+import DetailsScreen from '../screens/DetailsScreen'
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -43,6 +43,16 @@ const TabNav = createMaterialBottomTabNavigator(
   },
 );
 
-const AppContainer = createAppContainer(TabNav);
+const MainScreenComponent = createAppContainer(TabNav);
 
-export default AppContainer;
+// class MainScreen extends React.Component {
+//   constructor(props) {
+//     super(props)
+//   }
+
+//   render() {
+//     return MainScreenComponent
+//   }
+// }
+
+export default MainScreenComponent;
