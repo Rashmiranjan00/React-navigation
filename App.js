@@ -36,17 +36,17 @@ class App extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    user: {
-      name: state.name,
-      addr: state.addr,
-      loc: state.loc,
-      prof: state.prof,
-      workex: state.workex,
-    }
-  };
-}
+// function mapStateToProps(state) {
+//   return {
+//     user: {
+//       name: state.name,
+//       addr: state.addr,
+//       loc: state.loc,
+//       prof: state.prof,
+//       workex: state.workex,
+//     }
+//   };
+// }
 
-// export default DetailsScreen;
-export default connect(mapStateToProps, null)(App);
+export default App;
+// export default connect(mapStateToProps, null)(App);

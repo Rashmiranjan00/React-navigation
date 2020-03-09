@@ -45,14 +45,14 @@ const TabNav = createMaterialBottomTabNavigator(
 
 const MainScreenComponent = createAppContainer(TabNav);
 
-// class MainScreen extends React.Component {
-//   constructor(props) {
-//     super(props)
-//   }
+class MainScreen extends React.Component {
+  constructor(props) {
+    super(props)
+  }
 
-//   render() {
-//     return MainScreenComponent
-//   }
-// }
+  render() {
+    return <MainScreenComponent/>
+  }
+}
 
-export default MainScreenComponent;
+export default MainScreen;

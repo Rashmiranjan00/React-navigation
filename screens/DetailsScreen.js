@@ -3,12 +3,13 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Card, TextInput} from 'react-native-paper';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {connect} from 'react-redux';
 
 class DetailsScreen extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   render() {
     // console.log('details')
     // console.log(this.props.user)
@@ -22,11 +23,13 @@ class DetailsScreen extends React.Component {
         }}>
         <Card>
           <Card.Title title="User Details" />
-          <Text>{this.props.name}</Text>
-          <Text>{this.props.addr}</Text>
-          <Text>{this.props.loc}</Text>
-          <Text>{this.props.prof}</Text>
-          <Text>{this.props.workex}</Text>
+          <Card.Content>
+            <Text>Name: {this.props.user.name}</Text>
+            <Text>Address: {this.props.user.addr}</Text>
+            <Text>Location: {this.props.user.loc}</Text>
+            <Text>Profession: {this.props.user.prof}</Text>
+            <Text>Work Experience: {this.props.user.workex}</Text>
+          </Card.Content>
         </Card>
         <Card>
           <Text>options Container</Text>
@@ -63,4 +66,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetailsScreen;
+function mapStateToProps(state) {
+  return {
+    user: {
+      name: state.name,
+      addr: state.addr,
+      loc: state.loc,
+      prof: state.prof,
+      workex: state.workex,
+    },
+  };
+}
+
+export default connect(mapStateToProps, null)(DetailsScreen);
