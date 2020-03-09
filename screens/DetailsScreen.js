@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, share, Share} from 'react-native';
 import {Card, TextInput} from 'react-native-paper';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -13,13 +13,18 @@ class DetailsScreen extends React.Component {
   render() {
     // console.log('details')
     // console.log(this.props.user)
+    const shareOptions = {
+      title: 'User Details',
+      message: `Hi i am ${this.props.user.name} working as ${this.props.user.prof} and having work experience of ${this.props.user.workex}`,
+    };
+    const shareData = () => Share.share(shareOptions);
     return (
       <View
         style={{
           flex: 1,
           flexDirection: 'column',
           alignItems: 'stretch',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-start',
         }}>
         <Card>
           <Card.Title title="User Details" />
@@ -32,7 +37,9 @@ class DetailsScreen extends React.Component {
           </Card.Content>
         </Card>
         <Card>
-          <Text>options Container</Text>
+          <TouchableOpacity onPress={shareData}>
+            <Text style={styles.btnText}>Share</Text>
+          </TouchableOpacity>
         </Card>
         <Card>
           <Text>Data Container</Text>
