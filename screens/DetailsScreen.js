@@ -1,23 +1,56 @@
 import React from 'react';
-import {View, Text, StyleSheet, share, Share} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Share,
+  FlatList,
+  Button,
+} from 'react-native';
 import {Card, TextInput} from 'react-native-paper';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {connect} from 'react-redux';
+import * as mainActions from '../actions/mainActions';
 
 class DetailsScreen extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      input: '',
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.addComment = this.addComment.bind(this);
   }
+
+  handleChange = (event = {}) => {
+    // console.log(event.nativeEvent.text)
+    this.setState({
+      input: event.nativeEvent.text,
+    });
+  };
+
+  addComment = () => {
+    console.log(this.state.input);
+    this.props.addComment(this.state.input);
+    this.setState({
+      input: '',
+    });
+  };
 
   render() {
     // console.log('details')
-    // console.log(this.props.user)
+    // console.log(this.props)
+    const {userInfo, comments} = this.props;
     const shareOptions = {
       title: 'User Details',
-      message: `Hi i am ${this.props.user.name} working as ${this.props.user.prof} and having work experience of ${this.props.user.workex}`,
+      message: `Hi i am ${userInfo.name} working as ${userInfo.prof} and having work experience of ${userInfo.workex}`,
     };
     const shareData = () => Share.share(shareOptions);
+    console.log(comments);
+
     return (
       <View
         style={{
@@ -26,28 +59,43 @@ class DetailsScreen extends React.Component {
           alignItems: 'stretch',
           justifyContent: 'flex-start',
         }}>
-        <Card>
+        <Card style={{flex: 3}}>
           <Card.Title title="User Details" />
           <Card.Content>
-            <Text>Name: {this.props.user.name}</Text>
-            <Text>Address: {this.props.user.addr}</Text>
-            <Text>Location: {this.props.user.loc}</Text>
-            <Text>Profession: {this.props.user.prof}</Text>
-            <Text>Work Experience: {this.props.user.workex}</Text>
+            <Text>Name: {userInfo.name}</Text>
+            <Text>Address: {userInfo.addr}</Text>
+            <Text>Location: {userInfo.loc}</Text>
+            <Text>Profession: {userInfo.prof}</Text>
+            <Text>Work Experience: {userInfo.workex}</Text>
           </Card.Content>
         </Card>
-        <Card>
+        <Card style={{flex: 1}}>
           <TouchableOpacity onPress={shareData}>
             <Text style={styles.btnText}>Share</Text>
           </TouchableOpacity>
         </Card>
-        <Card>
-          <Text>Data Container</Text>
+        <Card style={{flex: 5}}>
+        <Card.Title title="Data Container" />
+        <Card.Content>
+          <FlatList data={comments} 
+          renderItem={({item}) => <Text>{item}</Text>}/>
+        </Card.Content>
+          
+          {/*<List containerStyle={{marginBottom: 20}}>
+            {comments.map((i) => (
+              <ListItem title={i} />
+            ))}
+            </List>*/}
         </Card>
-        <Card>
-          <TextInput placeholder="Add Comment..." style={styles.input} />
+        <Card style={{flex: 2, flexDirection: 'row', alignItems: 'flex-end'}}>
+          <TextInput
+            placeholder="Add Comment..."
+            style={styles.input}
+            value={this.state.input}
+            onChange={this.handleChange}
+          />
           <TouchableOpacity>
-            <Text style={styles.btnText}>Add</Text>
+            <Button title="Add" onPress={this.addComment} />
           </TouchableOpacity>
         </Card>
       </View>
@@ -74,15 +122,19 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
+  console.log('Redux state', state);
   return {
-    user: {
-      name: state.name,
-      addr: state.addr,
-      loc: state.loc,
-      prof: state.prof,
-      workex: state.workex,
+    userInfo: state.userInfo,
+    comments: state.comments,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addComment: comment => {
+      dispatch(mainActions.addComment(comment));
     },
   };
 }
 
-export default connect(mapStateToProps, null)(DetailsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(DetailsScreen);

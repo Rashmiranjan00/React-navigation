@@ -2,9 +2,6 @@ import React from 'react';
 import {NetInfo} from 'react-native';
 import MainScreen from './utils/MainScreen';
 import {createStore} from 'redux';
-import reducer from './reducers/userDetailsReducer';
-import { connect } from 'react-redux';
-import DetailsScreen from './screens/DetailsScreen'
 
 
 const CheckConnectivity = () => {
@@ -17,7 +14,6 @@ const CheckConnectivity = () => {
   });
 };
 
-const store = createStore(reducer);
 
 class App extends React.Component {
   constructor(props) {
@@ -31,22 +27,9 @@ class App extends React.Component {
     //   return (Alert.alert("You are offline"));
     // }
     return (
-      <MainScreen user={this.props.user} />
+      <MainScreen />
     );
   }
 }
 
-// function mapStateToProps(state) {
-//   return {
-//     user: {
-//       name: state.name,
-//       addr: state.addr,
-//       loc: state.loc,
-//       prof: state.prof,
-//       workex: state.workex,
-//     }
-//   };
-// }
-
 export default App;
-// export default connect(mapStateToProps, null)(App);
