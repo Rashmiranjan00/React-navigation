@@ -1,17 +1,14 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Share,
-  FlatList,
-  Button,
-} from 'react-native';
+import {View, Text, StyleSheet, Share, FlatList, Button} from 'react-native';
 import {Card, TextInput} from 'react-native-paper';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {bindActionCreators} from 'redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {connect} from 'react-redux';
 import * as mainActions from '../actions/mainActions';
+import axios from 'axios';
+
+// import {fetchUsers} from '../utils/fetchUsers';
 
 class DetailsScreen extends React.Component {
   constructor(props) {
@@ -25,6 +22,10 @@ class DetailsScreen extends React.Component {
     this.addComment = this.addComment.bind(this);
   }
 
+  // componentDidMount() {
+  //   fetchUsers();
+  // }
+
   handleChange = (event = {}) => {
     // console.log(event.nativeEvent.text)
     this.setState({
@@ -33,7 +34,7 @@ class DetailsScreen extends React.Component {
   };
 
   addComment = () => {
-    console.log(this.state.input);
+    // console.log(this.state.input);
     this.props.addComment(this.state.input);
     this.setState({
       input: '',
@@ -42,14 +43,15 @@ class DetailsScreen extends React.Component {
 
   render() {
     // console.log('details')
-    // console.log(this.props)
-    const {userInfo, comments} = this.props;
+    // console.log(this.props);
+    const {userInfo, comments, users, error} = this.props;
+    // console.log(users)
     const shareOptions = {
       title: 'User Details',
       message: `Hi i am ${userInfo.name} working as ${userInfo.prof} and having work experience of ${userInfo.workex}`,
     };
     const shareData = () => Share.share(shareOptions);
-    console.log(comments);
+    // console.log(comments);
 
     return (
       <View
@@ -75,17 +77,13 @@ class DetailsScreen extends React.Component {
           </TouchableOpacity>
         </Card>
         <Card style={{flex: 5}}>
-        <Card.Title title="Data Container" />
-        <Card.Content>
-          <FlatList data={comments} 
-          renderItem={({item}) => <Text>{item}</Text>}/>
-        </Card.Content>
-          
-          {/*<List containerStyle={{marginBottom: 20}}>
-            {comments.map((i) => (
-              <ListItem title={i} />
-            ))}
-            </List>*/}
+          <Card.Title title="Data Container" />
+          <Card.Content>
+            <FlatList
+              data={comments}
+              renderItem={({item}) => <Text>{item}</Text>}
+            />
+          </Card.Content>
         </Card>
         <Card style={{flex: 2, flexDirection: 'row', alignItems: 'flex-end'}}>
           <TextInput
@@ -126,7 +124,26 @@ function mapStateToProps(state) {
   return {
     userInfo: state.userInfo,
     comments: state.comments,
+    error: state.error,
+    users: state.users,
   };
+}
+
+function fetchUsers() {
+  return dispatch =>
+    fetch('https://reqres.in/api/users/2')
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) {
+          throw res.error;
+        }
+        dispatch(mainActions.fetchUsersSuccess(res.data));
+        console.log('Results', res.data);
+        return res.data;
+      })
+      .catch(error => {
+        dispatch(mainActions.fetchUsersError(error));
+      });
 }
 
 function mapDispatchToProps(dispatch) {
@@ -134,6 +151,7 @@ function mapDispatchToProps(dispatch) {
     addComment: comment => {
       dispatch(mainActions.addComment(comment));
     },
+    fetchUsers: dispatch(fetchUsers()),
   };
 }
 
